@@ -353,10 +353,46 @@ void TFT::drawString(char *string,INT16U poX, INT16U poY, INT16U size,INT16U fgc
     }
 }
 
+void TFT::fillCircleHelper(INT16U x0, INT16U y0, INT16U r,
+    uint8_t cornername, INT16U delta, uint16_t color) {
+
+  INT16U f     = 1 - r;
+  INT16U ddF_x = 1;
+  INT16U ddF_y = -2 * r;
+  INT16U x     = 0;
+  INT16U y     = r;
+
+  while (x<y) {
+    if (f >= 0) {
+      y--;
+      ddF_y += 2;
+      f     += ddF_y;
+    }
+    x++;
+    ddF_x += 2;
+    f     += ddF_x;
+
+    if (cornername & 0x1) {
+      drawFastVLine(x0+x, y0-y, 2*y+1+delta, color);
+      drawFastVLine(x0+y, y0-x, 2*x+1+delta, color);
+    }
+    if (cornername & 0x2) {
+      drawFastVLine(x0-x, y0-y, 2*y+1+delta, color);
+      drawFastVLine(x0-y, y0-x, 2*x+1+delta, color);
+    }
+  }
+}
 //fillRectangle(poX+i*size, poY+f*size, size, size, fgcolor);
 void TFT::fillRectangle(INT16U poX, INT16U poY, INT16U length, INT16U width, INT16U color)
 {
     fillScreen(poX, poX+length, poY, poY+width, color);
+}
+
+void TFT::fillRoundRect(INT16U poX, INT16U poY, INT16U length, INT16U width, INT16U r, INT16U color)
+{
+    fillRectangle(poX+r, poY, length-2*r, width, color);
+    fillCircleHelper(poX+length-r-1, poY+r, r, 1, width-2*r-1, color);
+    fillCircleHelper(poX+r , poY+r, r, 2, length-2*r-1, color);
 }
 
 void  TFT::drawHorizontalLine( INT16U poX, INT16U poY,
