@@ -202,6 +202,8 @@ public:
     }
     
 	void fillRectangle(INT16U poX, INT16U poY, INT16U length, INT16U width, INT16U color);
+	void fillRoundRect(INT16U poX, INT16U poY, INT16U length, INT16U width, INT16U r, INT16U color);
+	void fillCircleHelper(INT16U x0, INT16U y0, INT16U r, uint8_t cornername, INT16U delta, uint16_t color);
 	
 	void drawLine(INT16U x0,INT16U y0,INT16U x1,INT16U y1,INT16U color);
     void drawVerticalLine(INT16U poX, INT16U poY,INT16U length,INT16U color);
